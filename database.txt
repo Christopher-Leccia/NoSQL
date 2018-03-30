@@ -1,0 +1,120 @@
+db.createCollection( "components",
+{
+  validator: { $jsonSchema: {
+    bsonType: "object",
+    required: ["c_id", "c_name", "c_brand", "c_type", "c_code", "c_price", "c_description", "c_compatibility", "c_feedback", "c_quantity"],
+    properties: {
+      c_id: {
+        bsonType: "int"
+      },
+      c_name: {
+        bsonType: "string"
+      },
+      c_brand: {
+        bsonType: "string"
+      },
+      c_type: {
+        bsonType: "string",
+        enum: [ "Motherboard", "CPU", "GPU", "RAM" ]
+      },
+      c_code: {
+        bsonType: "string"
+      },
+      c_price: {
+        bsonType: "object",
+        required: ["p_price", "p_date"],
+        properties: {
+          p_price: { bsonType: "int" },
+          p_date: { bsonType: "date" }
+        }
+      },
+      c_description: {
+        bsonType : "string"
+      },
+      c_compatibility: {
+        bsonType: "object",
+        required: ["c_name"],
+        properties: {
+          c_name: { bsonType: "string" }
+        }
+      },
+      c_feedback: {
+        bsonType: "object",
+        required: ["c_id", "u_name", "title", "data"],
+        properties: {
+            c_id: { bsonType: "int" },
+            u_name: { bsonType: "string" },
+            title: { bsonType: "string" },
+            data: { bsonType: "string" },
+            grade: { bsonType: "int", minimum: 1, maximum: 5 }
+        }
+      },
+      c_quantity : {
+        bsonType: "int"
+      }
+    }
+  },validationAction: "error"}
+})
+
+db.createCollection( "users",
+{
+  validator: { $jsonSchema: {
+    bsonType: "object",
+    required: ["u_id", "u_fname", "u_lname", "u_address", "u_phone", "u_login", "u_mail", "u_password", "u_commands", "u_panier"],
+    properties: {
+      u_id: {
+        bsonType: "int"
+      },
+      u_fname: {
+        bsonType: "string"
+      },
+      u_lname: {
+        bsonType: "string"
+      },
+      u_address: {
+        bsonType: "string"
+      },
+      u_phone: {
+        bsonType: "string"
+      },
+      u_login: {
+        bsonType: "string"
+      },
+      u_mail: {
+        bsonType: "string"
+      },
+      u_password: {
+        bsonType: "string"
+      },
+      u_commands: {
+        bsonType: "object",
+        required: ["command_id", "command_data", "command_date", "command_price"],
+        properties: {
+          command_id: {
+            bsonType: "string"
+          },
+          command_data: {
+            bsonType: "object",
+            required: ["c_id", "c_name", "c_price", "command_quantity"],
+            properties: {
+              c_id: { bsonType: "int" },
+              c_name: { bsonType: "string" },
+              c_price: { bsonType: "int" }
+            }
+          },
+          command_date: { bsonType: "date" },
+          command_price: { bsonType: "int" }
+        }
+      },
+      u_panier: {
+        bsonType: "object",
+        required: ["c_name", "c_price", "panier_quantity"],
+        properties: {
+          c_name: { bsonType: "string" },
+          c_price: { bsonType: "int" },
+          panier_quantity: { bsonType: "int" }
+        }
+      }
+    }
+  },validationAction: "error"}
+})
